@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
+<meta charset="utf-8"/>
    <style>
 		#container {
 			height: 500px; 
@@ -15,14 +14,19 @@
 </head>
 <body>
  <! Cac file javascript !>
- <script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="highmaps.js"></script>
 <script src="world2-palestine-highres.js"></script>
 <div id="container"></div>
-
+<div id="search">
+<select id="searchCountry">
+    
+</select>
+</div>
 <script>
-var data = [
+var datas = [
     ['gl', 0],
     ['sh', 1],
     ['bu', 2],
@@ -240,41 +244,68 @@ var data = [
     ['kg', 214]
 ];
 
-		// Create the chart
-		Highcharts.mapChart('container', {
-			chart: {
-				map: 'custom/world-palestine-highres'
-			},
+function loadHightChart(datamap){
 
-			title: {
-				text: 'Your country on the map of the world'
-			},    
-		 
-		/* Scale ban do */
-		   mapNavigation: {
-				enabled: true,
-				buttonOptions: {
-				   verticalAlign: 'bottom'
-				}
-			},
-			
+        var test = datamap.split(',');
+        //var datamap = [["'"+datas[0]+"'", datas[1]]];
+        var parent = [[test[0].toString(), datamap[1]]];
+        parent.push(datas);
+        console.log(parent);
+            // Create the chart
+        Highcharts.mapChart('container', {
+            chart: {
+                map: 'custom/world-palestine-highres'
+            },
 
-		series: [{
-		   data: data,
-			name: 'My country',
-			
-			states: {
-			  hover: {
-			   color: '#BADA45'
-				}
-			},
-			
-			dataLabels: {
-			   // enabled: true,
-			   // format: '{point.name}'
-			},
-		}]
-});
+            title: {
+                text: 'Your country on the map of the world'
+            },    
+         
+        /* Scale ban do */
+           mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                   verticalAlign: 'bottom'
+                }
+            },
+            
+
+            series: [{
+               data: parent,
+                name: 'My country',
+                
+                states: {
+                  hover: {
+                   color: '#BADA45'
+                    }
+                },
+                
+                dataLabels: {
+                   // enabled: true,
+                   // format: '{point.name}'
+                },
+            }]
+        });
+    };
+
+
+    $(document).ready(function(){
+
+        $(datas).each(function(i){
+            //console.log(json[i][0]);
+            $('#searchCountry').append('<option value=' +  datas[i] + '>' + datas[i][0] + '</option>');
+        });
+
+        $('#searchCountry').change(function(i){
+
+            $('#container').html("");
+            console.info("start")
+            console.log($(this).val())
+            console.info("end");
+            loadHightChart($(this).val());
+
+        });
+    });
 </script>
 
 </body>
