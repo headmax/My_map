@@ -247,7 +247,7 @@ var data = [
 			},
 
 			title: {
-				text: 'Welcome to My Country!'
+				text: 'Your country on the map of thhe world'
 			},    
 		 
 		/* Scale ban do */
